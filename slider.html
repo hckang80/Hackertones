@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>왓챠 컨텐츠 기능 구현 연습</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    @font-face {
+      font-family: 'fontello';
+      src: url('../font/fontello.eot?49844503');
+      src: url('../font/fontello.eot?49844503#iefix') format('embedded-opentype'),
+          url('../font/fontello.woff2?49844503') format('woff2'),
+          url('../font/fontello.woff?49844503') format('woff'),
+          url('../font/fontello.ttf?49844503') format('truetype'),
+          url('../font/fontello.svg?49844503#fontello') format('svg');
+      font-weight: normal;
+      font-style: normal;
+    }
+    [class^="icon-"]:before, [class*=" icon-"]:before {
+      font-family: "fontello";
+      font-style: normal;
+      font-weight: normal;
+      speak: none;
+    
+      display: inline-block;
+      text-decoration: inherit;
+      width: 1em;
+      margin-right: .2em;
+      text-align: center;
+      /* opacity: .8; */
+    
+      /* For safety - reset parent styles, that can break glyph codes*/
+      font-variant: normal;
+      text-transform: none;
+    
+      /* fix buttons height, for twitter bootstrap */
+      line-height: 1em;
+    
+      /* Animation center compensation - margins should be symmetric */
+      /* remove if not needed */
+      margin-left: .2em;
+    
+      /* you can be more comfortable with increased icons size */
+      /* font-size: 120%; */
+    
+      /* Font smoothing. That was taken from TWBS */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    
+      /* Uncomment for 3D effect */
+      /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+    }
+    
+    .icon-right-open-big:before { content: '\e801'; } /* '' */
+    .icon-left-open-big:before { content: '\e802'; } /* '' */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 10px;
+    }
+
+    body {
+      min-width: 1200px;
+      -webkit-font-smoothing: antialiased;
+      background: #000;
+      font: 1.2rem/1.5 'Apple SD Gothic Neo', 'Malgun Gothic', dotum, sans-serif;
+      color: #767676;
+    }
+
+    button {
+      cursor: pointer;
+    }
+    
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .guide-line {
+      position: relative;
+      width: 1200px;
+      margin: 0 auto;
+    }
+
+    .main-slider {
+      position: relative;
+      height: 500px;
+    }
+    .main-slider .body {
+      position: relative;
+      height: 100%;
+    }
+    .main-slider li {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: 50% 0;
+      background-size: 100%;
+    }
+    .main-slider li.active {
+      z-index: 1;
+    }
+    /* .main-slider li.active {
+      animation: fadein-ani 1s;
+      z-index: 2;
+    }
+    @keyframes fadein-ani {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    } */
+    .main-slider .guide-line {
+      height: 100%;
+    }
+    .main-slider .information {
+      position: absolute;
+      left: 0;
+      bottom: 120px;
+      margin: 0 10px;
+      color: #fff;
+    }
+    .main-slider .today {
+      font-size: 1.8rem;
+    }
+    .main-slider dt {
+      font-size: 3.2rem;
+    }
+    .main-slider dd {
+      font-size: 1.6rem;
+    }
+    .main-slider .each {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 50px;
+      z-index: 4;
+      text-align: center;
+      font-size: 0;
+    }
+    .main-slider .each span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin: 0 5px;  
+      border-radius: 100%;
+      background: #fff;
+      opacity: .5;
+      cursor: pointer;
+    }
+    .main-slider .each span.current {
+      opacity: 1;
+    }
+    .main-slider .arrow {
+      
+    }
+    .main-slider .arrow button {
+      position: absolute;
+      top: 50%;
+      z-index: 4;
+      transform: translateY(-50%);
+      font-size: 0;
+      background: none;
+      border: 0;
+    }
+    .main-slider .arrow button.prev {
+      left: 0;
+    }
+    .main-slider .arrow button.next {
+      right: 0;
+    }
+    .main-slider .arrow i {
+      display: block;
+    }
+    .main-slider .arrow i:before {
+      font-size: 5rem;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-slider">
+    <ul class="body">
+      <li class="active" style="background-image:url('./slider1.jpg');">
+        <div class="guide-line">
+          <div class="information">
+            <div class="today">오늘의 박스오피스</div>
+            <dl>
+              <dt><a href="#">지금 만나러 갑니다</a></dt>
+              <dd>평균 별점 : 3.4 , 예매율 : 35.16%
+                <br> 2017, 한국, 로맨스/멜로, 12세 관람가, 2시간 11분
+                <br> 감독 : 이장훈 , 배우 : 소지섭, 손예진
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </li>
+      <li style="background-image:url('./slider2.jpg');">
+        <div class="guide-line">
+          <div class="information">
+            <div class="today">오늘의 개봉예정작</div>
+            <dl>
+              <dt><a href="#">퍼시픽 림: 업라이징</a></dt>
+              <dd>평균 별점 : 3.4 , 예매율 : 35.16%
+                <br> 2017, 한국, 로맨스/멜로, 12세 관람가, 2시간 11분
+                <br> 감독 : 이장훈 , 배우 : 소지섭, 손예진
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </li>
+      <li style="background-image:url('./slider3.png');">
+        <div class="guide-line">
+          <div class="information">
+            <dl>
+              <dt>
+                <a href="#">모바일에서도 왓챠!</a>
+              </dt>
+              <dd>모바일에서도 왓챠! 모바일 앱을 다운받으면, 언제 어디서나 왓챠와 함께할 수 있답니다!<br> 주변 극장 상영시간표, 지금 TV에서 방영되는 영화들도 확인 해 보세요.</dd>
+            </dl>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="each"></div>
+    <div class="arrow">
+      <button class="prev"><i class="icon-left-open-big"></i>이전 작품 보기</button>
+      <button class="next"><i class="icon-right-open-big"></i>다음 작품 보기</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      let currentNum = 0;
+      let sliderDirect = 'right';
+      let isAni = false;
+      let sliderItem = document.querySelectorAll('.main-slider .body li');
+      const arrowBtn = document.querySelector('.main-slider .arrow');
+      const dotBtn = document.querySelector('.main-slider .each');
+
+      sliderItem = [].slice.call(sliderItem);
+
+      const mainSlider = () => {
+        let OPACITY = 0;
+        let sliderDot = document.querySelectorAll('.main-slider .each span');
+        sliderDot = [].slice.call(sliderDot);
+        sliderDot.forEach(item => item.classList.remove('current'));
+        sliderDot[currentNum].classList.add('current');
+
+        const frame = () => {
+          if (Math.floor(OPACITY) === 1) {
+            clearInterval(interval);
+            sliderItem.forEach(item => {
+              item.classList.remove('active');
+              item.style.zIndex = null;
+              item.style.opacity = null;
+            });
+            sliderItem[currentNum].classList.add('active');
+            sliderItem[currentNum].style.zIndex = '2';
+            isAni = false;
+          } else {
+            OPACITY += 0.01;
+            sliderItem[currentNum].style.opacity = OPACITY;
+            sliderItem[currentNum].style.zIndex = '4';
+          }
+        };
+        const interval = setInterval(frame, 2.5);
+      };
+
+      const currentMovieNumberInit = state => {
+        if (isAni) return;
+        isAni = true;
+        if (state === 'right') {
+          if (currentNum === sliderItem.length - 1) {
+            currentNum = 0;
+          } else {
+            currentNum += 1;
+          }
+        } else if (state === 'left') {
+          if (currentNum === 0) {
+            currentNum = sliderItem.length - 1;
+          } else {
+            currentNum -= 1;
+          }
+        } else {
+          currentNum = state;
+        }
+        mainSlider();
+      };
+
+      const autoFn = () => {
+        const autoPlay = setInterval(() => {
+          currentMovieNumberInit('right');
+        }, 2000);
+      };
+
+      const getDots = () => {
+        let html = '';
+        let current = '';
+        for (let i = 0; i < sliderItem.length; i++) {
+          if (i === 0) {
+            current = ' class="current"';
+          } else {
+            current = '';
+          }
+          html += `<span data-id="${i}"${current}>${i + 1}</span>`;
+        }
+        dotBtn.innerHTML = html;
+        autoFn();
+      };
+
+      window.addEventListener('load', getDots);
+
+      arrowBtn.addEventListener('click', e => {
+        if (e.target.nodeName !== 'I') return;
+        if (e.target.className === 'icon-left-open-big') {
+          sliderDirect = 'left';
+        } else if (e.target.className === 'icon-right-open-big') {
+          sliderDirect = 'right';
+        }
+        currentMovieNumberInit(sliderDirect);
+      });
+
+      dotBtn.addEventListener('click', e => {
+        if (currentNum === +e.target.dataset.id || e.target.nodeName !== 'SPAN') return;
+        currentMovieNumberInit(+e.target.dataset.id);
+      });
+    }());
+  </script>
+</body>
+
+</html>
